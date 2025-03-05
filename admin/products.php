@@ -70,9 +70,14 @@ $pdo = $db->getConnection();
                                                 <td>$<?php echo number_format($product['price'], 2); ?></td>
                                                 <td>
 <<<<<<< HEAD
+<<<<<<< HEAD
                             
 =======
                                                 <img src="/www/web_project/<?php echo $product['image']; ?>" width="50">
+>>>>>>> vichea
+=======
+                                                    <img src="/www/web_project/<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>"
+                                                        width="50">
 >>>>>>> vichea
                                                 </td>
                                                 <td><?php echo substr($product['description'], 0, 50) . '...'; ?></td>
@@ -103,7 +108,6 @@ $pdo = $db->getConnection();
                         </div>
                     </div>
                 </div>
-                <?php include 'includes/footer.php'; ?>
             </div>
         </div>
     </div>
