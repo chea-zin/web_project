@@ -68,9 +68,7 @@ $pdo = $db->getConnection();
                                                 <td><?php echo $product['id']; ?></td>
                                                 <td><?php echo $product['name']; ?></td>
                                                 <td>$<?php echo number_format($product['price'], 2); ?></td>
-                                                <td>
-                                                    
-                                                </td>
+                                                 
                                                 <td><?php echo substr($product['description'], 0, 50) . '...'; ?></td>
                                                 <td><?php echo $product['category']; ?></td>
                                                 <td><?php echo $product['created_at']; ?></td>
