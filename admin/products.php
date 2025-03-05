@@ -69,8 +69,6 @@ $pdo = $db->getConnection();
                                                 <td><?php echo $product['name']; ?></td>
                                                 <td>$<?php echo number_format($product['price'], 2); ?></td>
                                                 <td>
-                                                    <img src="/www/web_project/<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>"
-                                                        width="50">
                                                 </td>
                                                 <td><?php echo substr($product['description'], 0, 50) . '...'; ?></td>
                                                 <td><?php echo $product['category']; ?></td>
