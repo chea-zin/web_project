@@ -1,5 +1,4 @@
 
-=======
 <?php
 include_once "includes/connection.php";
 class User
@@ -79,4 +78,3 @@ class User
 
 $db = new Connection();
 $user = new User($db);
->>>>>>> mony
