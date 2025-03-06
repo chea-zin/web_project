@@ -41,22 +41,26 @@ if (isset($_SESSION['name'])) {
             <ul>
                 <li><a href="index.php">Home</a></li>
                 <li><a href="products.php">Products</a></li>
-                <li><a href="#">Checkout</a></li>
+                <li><a href="checkout.php">Checkout</a></li>
                 <li><a href="#">About</a></li>
             </ul>
         </div>
         <div class="container">
             <!-- Cart Button -->
-            <button id="mycart" type="button" class="mycart-button" onclick="toggleCart()">
-                <span id="cart-count" class="cart-count">
-                    <?php echo $cartItemCount; ?>
-                </span>
-                <i class="fa-solid fa-bag-shopping"></i>
-            </button>
+            <div class="sub-container">
+                <button id="mycart" type="button" class="mycart-button" onclick="window.location.href='cart.php';">
+                    <span id="cart-count" class="cart-count">
+                        <?php echo $cartItemCount; ?>
+                    </span>
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </button>
 
-            <button id="userDropdownButton1" data-dropdown-toggle="userDropdown1" type="button" class="dropdown-button">
-                <i class="fa-solid fa-user"></i>
-            </button>
+
+                <button id="userDropdownButton1" data-dropdown-toggle="userDropdown1" type="button"
+                    class="dropdown-button">
+                    <i class="fa-solid fa-user"></i>
+                </button>
+            </div>
 
             <div id="userDropdown1" class="dropdown hidden">
                 <ul class="dropdown-list">
@@ -78,26 +82,12 @@ if (isset($_SESSION['name'])) {
 
                 </ul>
             </div>
-        </div>
-        <div id="hamburger" class="hamburger">
-            ☰
+            <div id="hamburger" class="hamburger">
+                ☰
+            </div>
         </div>
     </div>
 </nav>
-<!-- Sidebar Cart -->
-<div id="cartSidebar" class="cart-sidebar">
-    <div class="cart-header">
-        <h3>My Cart</h3>
-        <button onclick="toggleCart()" class="close-btn"></button>
-    </div>
-    <div class="cart-content">
-        <p>Your cart is empty</p>
-        <!-- Dynamic cart items will be inserted here -->
-    </div>
-    <div class="cart-footer">
-        <button class="checkout-btn">Proceed to Checkout</button>
-    </div>
-</div>
 
 <style>
 nav {
@@ -111,7 +101,11 @@ nav {
     z-index: 1000;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
+.sub-container{
+   margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
 #navbar {
     display: flex;
     justify-content: space-between;
@@ -152,7 +146,7 @@ nav {
     display: flex;
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin-top: 10px;
     gap: 15px;
     flex-wrap: wrap;
     /* Allow items to wrap */
@@ -180,7 +174,7 @@ nav {
 }
 
 .container {
-    top: 5px;
+    top: -3px;
     position: relative;
     align-items: center;
     display: flex;
@@ -203,7 +197,16 @@ nav {
     z-index: 10;
     margin-left: 60px;
 }
-
+@media (max-width: 624px) {
+    #navbar-links ul {
+        flex-direction: column;
+        gap: 0;
+        padding: 10px 0;
+        margin-top: 850px;
+        align-items: center;
+        justify-content: center;
+    }
+}
 /* Mobile Styles */
 @media (max-width: 768px) {
     #navbar {
@@ -231,19 +234,22 @@ nav {
         width: 100%;
         max-height: 0;
         overflow: hidden;
-        height: 200px;
-        transition: max-height 0.4s ease-in-out;
+        height: 900px;
+        transition: max-height 0.3s ease-in-out;
     }
 
     #navbar-links ul {
         flex-direction: column;
         gap: 0;
         padding: 10px 0;
+        margin-top: 150px;
         align-items: center;
+        justify-content: center;
     }
 
     #navbar-links ul li {
         padding: 10px 20px;
+        font-size: 20px;
     }
 
     #navbar-links.show {
@@ -259,8 +265,8 @@ nav {
     }
 
     .container {
-        left: 65px;
-        top: 3px;
+        left: -70px;
+        top: 2px;
         position: relative;
         align-items: center;
         display: flex;
@@ -285,7 +291,11 @@ nav {
         transition: max-height 0.4s ease, opacity 0.3s ease;
         margin-left: 60px;
     }
-
+    .sub-container{
+   margin-top: 4px;
+    display: flex;
+    align-items: center;
+}
     /* Dropdown Active State */
     .dropdown.open {
         max-height: 400px;
@@ -449,14 +459,14 @@ nav {
 /* Cart Sidebar Styles */
 .cart-sidebar {
     position: fixed;
-    top: 0;
+    top: 73px;
     right: -600px;
     width: 600px;
     height: 80%;
     background-color: white;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
     transition: right 0.3s ease-in-out;
-    z-index: 3000;
+    z-index: 9999;
     display: flex;
     pointer-events: none;
     overflow-y: auto;
@@ -464,23 +474,16 @@ nav {
 }
 
 .cart-sidebar.active {
+    z-index: 9999;
     right: 0;
     pointer-events: auto;
 }
 
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background-color: #f0f0f0;
-    border-bottom: 1px solid #ccc;
-}
 
 .cart-content {
     flex: 1;
     padding: 15px;
-    overflow-y: auto;
+    z-index: 5000;
     overflow: auto;
 }
 

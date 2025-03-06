@@ -40,7 +40,6 @@ $cartItems = $cartItemsStmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
-    <link href="assets/styles/product_page/styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
     /* General Page Styling */
@@ -53,6 +52,7 @@ $cartItems = $cartItemsStmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     h1 {
+        margin-top:80px;
         text-align: center;
         color: #28a745;
         margin-bottom: 30px;
@@ -69,6 +69,7 @@ $cartItems = $cartItemsStmt->fetchAll(PDO::FETCH_ASSOC);
         overflow: auto;
         overflow-y: auto;
         padding: 20px;
+        margin-top: 10px;
         align-items: center;
         text-align: center;
     }
@@ -202,15 +203,16 @@ $cartItems = $cartItemsStmt->fetchAll(PDO::FETCH_ASSOC);
             text-align: left;
         }
         .cart-container {
-            height: 200px;
+            height: 90%;
+            overflow-y: auto;
         }
     }
     </style>
 </head>
 
 <body>
-    <?php include("components/nav.php");?>
-    <h1>Shopping Cart</h1>
+    <?php include("components/nav.php"); ?>
+    <h1>My Shopping Cart</h1>
     <div class="cart-container">
         <?php if ($cartItems): ?>
         <?php
