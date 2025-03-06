@@ -1,5 +1,4 @@
 
-=======
 <?php
 session_start();
 include_once 'includes/connection.php';
@@ -118,6 +117,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
     <script src="dist/js/pages/dashboards/dashboard1.min.js"></script>
 </body>
-
->>>>>>> mony
 </html>
