@@ -1,33 +1,32 @@
 <?php
 session_start();
 include_once 'includes/connection.php';
-require_once 'includes/insertUser.php';
+require_once 'includes/insertProduct.php';
 
 $db = new Connection();
 $pdo = $db->getConnection();
-$user = new User($db);
+$pro = new Products($db);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST["name"] ?? "");
-    $phone = trim($_POST["phone"] ?? "");
-    $email = trim($_POST["email"] ?? "");
-    $password = trim($_POST["password"] ?? "");
-    $is_ban = trim(isset($_POST["is_ban"]) ? 1 : 0);
-    $role = trim($_POST["role"] ?? "");
+    $description = trim($_POST["description"] ?? "");
+    $price = trim($_POST["price"] ?? "");
+    $image = trim(string: $_FILES["image"]['name'] ?? "");
+    $pro_image_tmp_name = trim($_FILES["image"]['tmp_name'] ?? "");
+    $pro_image_folder = "assets/images/product_page/" .$image;
 
-    if (!empty($name) && !empty($phone) && !empty($email) && !empty($password) && !empty($is_ban) && !empty($role)) {
+    if (!empty($name) && !empty($description) && !empty($price) && !empty($image)) {
 
-        // Secure password hashing
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        // Insert user into database
-        if ($user->insert($name, $phone, $email, $hashedPassword, $is_ban, $role)) {
-            $_SESSION['message'] = "User Created Successfully!";
-            header("Location: user.php");
+        // Insert product into database
+        if ($pro->insert($name, $description, $price, $image)) {
+            $_SESSION['message'] = "Product Created Successfully!";
+            header("Location: products.php");
             exit();
         } else {
-            $_SESSION['error'] = "Failed to insert user.";
+            $_SESSION['error'] = "Failed to insert product.";
         }
+        //For add new image
+        move_uploaded_file($pro_image_tmp_name, $pro_image_folder);
     } else {
         $_SESSION['error'] = "All fields are required!";
     }
@@ -50,8 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
         <?php include 'includes/header.php' ?>
-        <?php include 'includes/sideBar.php' ?>
-        <?php include 'includes/header.php' ?>
 
         <?php include 'includes/sideBar.php' ?>
 
@@ -61,11 +58,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="card">
                         <div class="card-header">
                             <h2>
-                                Add User
+                                Add Products
                             </h2>
                         </div>
                         <div class="card-body">
-                            <form action="user_create.php" method="POST">
+                            <form action="product_add.php" method="POST" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -75,45 +72,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="phone">Phone No.</label>
-                                            <input type="text" name="phone" class="form-control">
+                                            <label for="description">Description</label>
+                                            <input type="text" name="description" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="email">Email</label>
-                                            <input type="text" name="email" class="form-control">
+                                            <label for="price">Price</label>
+                                            <input type="text" name="price" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="password">Password</label>
-                                            <input type="password" name="password" class="form-control">
+                                            <label for="image">Image</label><br/>
+                                            <input type="file" name="image" accept="image/*">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label>Select Role</label>
-                                            <br />
-                                            <select name="role" class="form-select text-secondary">
-                                                <option value="">Select Role</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="user">User</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label for="role">Is Ban</label>
-                                            <br>
-                                            <input type="checkbox" name="is_ban" style="width: 20px; height: 20px;">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="mb-3 text-right">
                                             <br />
-                                            <button href="#" type="submit" class="btn btn-info mr-2" name="acceptUser">Accept</button>
-                                            <button href="#" type="reset" class="btn btn-danger" name="cancelUser">Cancel</button>
+                                            <button type="submit" class="btn btn-info mr-2" name="acceptProduct">Accept</button>
+                                            <a href="products.php" type="reset" class="btn btn-danger" name="cancelUser">Cancel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -122,8 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </div>
-
-            <?php include 'includes/footer.php' ?>
         </div>
     </div>
 

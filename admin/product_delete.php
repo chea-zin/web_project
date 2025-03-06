@@ -1,34 +1,34 @@
 <?php
 session_start();
 include 'includes/connection.php';
-include 'includes/insertCategory.php';
+include 'includes/insertProduct.php';
 $db = new Connection();
 $pdo = $db->getConnection();
 
-if (isset($_GET['cat_id'])) {
-    $id = $_GET['cat_id'];
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
 
     try {
-        $stmt = $pdo->prepare("DELETE FROM category WHERE cat_id = :cat_id");
-        $stmt->bindParam(':cat_id', $id, PDO::PARAM_INT);
+        $stmt = $pdo->prepare("DELETE FROM products WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            $_SESSION['message'] = "category deleted successfully!";
-            header("Location: categories.php");
+            $_SESSION['message'] = "Product deleted successfully!";
+            header("Location: products.php");
             exit();
         } else {
-            $_SESSION['error'] = "Failed to delete category!";
-            header("Location: categories.php");
+            $_SESSION['error'] = "Failed to delete Product!";
+            header("Location: products.php");
             exit();
         }
     } catch (PDOException $e) {
         $_SESSION['error'] = "Error: " . $e->getMessage();
-        header("Location: categories.php");
+        header("Location: products.php");
         exit();
     }
 } else {
     $_SESSION['error'] = "No ID provided!";
-    header("Location: categories.php");
+    header("Location: products.php");
     exit();
 }
 ?>
@@ -60,8 +60,8 @@ if (isset($_GET['cat_id'])) {
                     <div class="card">
                         <div class="card-header">
                             <h3>
-                                Categories List
-                                <a href="category_add.php" class="btn btn-info float-right">Add Category</a>
+                                Products List
+                                <a href="product_add.php" class="btn btn-info float-right">Add Products</a>
                             </h3>
                         </div>
                         <div class="card-body">
@@ -71,13 +71,15 @@ if (isset($_GET['cat_id'])) {
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Price</th>
                                             <th>Created At</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $sql = "SELECT * FROM category";
+                                        $sql = "SELECT * FROM products";
                                         $stmt = $pdo->prepare($sql);
                                         $stmt->execute();
 
@@ -86,12 +88,14 @@ if (isset($_GET['cat_id'])) {
                                             foreach ($result as $row) {
                                         ?>
                                                 <tr>
-                                                    <td><?php echo $row['cat_id']; ?></td>
-                                                    <td><?php echo $row['cat_name']; ?></td>
+                                                    <td><?php echo $row['id']; ?></td>
+                                                    <td><?php echo $row['name']; ?></td>
+                                                    <td><?php echo $row['description'];?></td>
+                                                    <td><?php echo $row['price']; ?></td>
                                                     <td><?php echo $row['created_at']; ?></td>
                                                     <td> 
-                                                        <a href="category_edit.php?cat_id=<?php echo $row['cat_id']; ?>" class="btn btn-warning btn-cust m-1">Edit</a>
-                                                        <a href="category_delete.php?cat_id=<?php echo $row['cat_id']; ?>" class="btn btn-danger btn-cust m-1" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                                                        <a href="product_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-warning btn-cust m-1">Edit</a>
+                                                        <a href="product_delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger btn-cust m-1" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
                                                     </td>
                                                 </tr>
                                                 </tr>
@@ -114,8 +118,6 @@ if (isset($_GET['cat_id'])) {
                     </div>
                 </div>
             </div>
-
-            <?php include 'includes/footer.php' ?>
         </div>
     </div>
     <script src="assets/libs/jquery/dist/jquery.min.js"></script>

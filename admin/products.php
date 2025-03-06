@@ -1,6 +1,6 @@
 <?php
 include 'includes/connection.php';
-include 'includes/insertUser.php';
+include 'includes/insertProduct.php';
 $db = new Connection();
 $pdo = $db->getConnection();
 
@@ -22,8 +22,6 @@ $pdo = $db->getConnection();
     <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
         <?php include 'includes/header.php' ?>
-        <?php include 'includes/sideBar.php' ?>
-        <?php include 'includes/header.php' ?>
 
         <?php include 'includes/sideBar.php' ?>
 
@@ -36,7 +34,7 @@ $pdo = $db->getConnection();
                             <div class="card-header">
                                 <h3>
                                     Product List
-                                    <a href="product_create.php" class="btn btn-info float-right">Add Product</a>
+                                    <a href="product_add.php" class="btn btn-info float-right">Add Product</a>
                                 </h3>
                             </div>
                             <div class="card-body">
@@ -69,7 +67,7 @@ $pdo = $db->getConnection();
                                                 <td><?php echo $product['name']; ?></td>
                                                 <td>$<?php echo number_format($product['price'], 2); ?></td>
                                                 <td>
-                                                    <img src="<?php echo $product['image']; ?>" alt="Product Image"
+                                                    <img src="/assets/images/echo $product['image']; ?>" alt="Product Image"
                                                         width="50">
                                                 </td>
                                                 <td><?php echo substr($product['description'], 0, 50) . '...'; ?></td>
@@ -77,9 +75,9 @@ $pdo = $db->getConnection();
                                                 <td><?php echo $product['created_at']; ?></td>
                                                 <td>
                                                     <a href="product_edit.php?id=<?php echo $product['id']; ?>"
-                                                        class="btn btn-warning btn-sm">Edit</a>
+                                                        class="btn btn-warning btn-sm btn-cust m-1">Edit</a>
                                                     <a href="product_delete.php?id=<?php echo $product['id']; ?>"
-                                                        class="btn btn-danger btn-sm"
+                                                        class="btn btn-danger btn-sm btn-cust m-1"
                                                         onclick="return confirm('Are you sure?')">Delete</a>
                                                 </td>
                                             </tr>
@@ -100,7 +98,6 @@ $pdo = $db->getConnection();
                         </div>
                     </div>
                 </div>
-                <?php include 'includes/footer.php'; ?>
             </div>
         </div>
     </div>

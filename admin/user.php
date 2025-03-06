@@ -44,10 +44,8 @@ $pdo = $db->getConnection();
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>phone</th>
                                             <th>Email</th>
                                             <th>Password</th>
-                                            <th>Role</th>
                                             <th>Created At</th>
                                             <th>Action</th>
                                         </tr>
@@ -65,10 +63,8 @@ $pdo = $db->getConnection();
                                                 <tr>
                                                     <td><?php echo $row['id']; ?></td>
                                                     <td><?php echo $row['name']; ?></td>
-                                                    <td><?php echo $row['phone']; ?></td>
                                                     <td><?php echo $row['email']; ?></td>
                                                     <td><?php echo $row['password']; ?></td>
-                                                    <td><?php echo $row['role']; ?></td>
                                                     <td><?php echo $row['created_at']; ?></td>
                                                     <td> 
                                                         <a href="user_edit.php?id=<?php echo $row['id']; ?>" class="btn btn-warning btn-cust m-1">Edit</a>
@@ -95,8 +91,6 @@ $pdo = $db->getConnection();
                     </div>
                 </div>
             </div>
-
-            <?php include 'includes/footer.php' ?>
         </div>
     </div>
     <script src="assets/libs/jquery/dist/jquery.min.js"></script>

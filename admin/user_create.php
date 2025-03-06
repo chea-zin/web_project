@@ -9,19 +9,16 @@ $user = new User($db);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST["name"] ?? "");
-    $phone = trim($_POST["phone"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $password = trim($_POST["password"] ?? "");
-    $is_ban = trim(isset($_POST["is_ban"]) ? 1 : 0);
-    $role = trim($_POST["role"] ?? "");
 
-    if (!empty($name) && !empty($phone) && !empty($email) && !empty($password) && !empty($is_ban) && !empty($role)) {
+    if (!empty($name) && !empty($email) && !empty($password)) {
 
         // Secure password hashing
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert user into database
-        if ($user->insert($name, $phone, $email, $hashedPassword, $is_ban, $role)) {
+        if ($user->insert($name,  $email, $hashedPassword, )) {
             $_SESSION['message'] = "User Created Successfully!";
             header("Location: user.php");
             exit();
@@ -75,12 +72,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="phone">Phone No.</label>
-                                            <input type="text" name="phone" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
                                             <label for="email">Email</label>
                                             <input type="text" name="email" class="form-control">
                                         </div>
@@ -91,29 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <input type="password" name="password" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label>Select Role</label>
-                                            <br />
-                                            <select name="role" class="form-select text-secondary">
-                                                <option value="">Select Role</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="user">User</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label for="role">Is Ban</label>
-                                            <br>
-                                            <input type="checkbox" name="is_ban" style="width: 20px; height: 20px;">
-                                        </div>
-                                    </div>
                                     <div class="col-md-6">
                                         <div class="mb-3 text-right">
                                             <br />
-                                            <button href="#" type="submit" class="btn btn-info mr-2" name="acceptUser">Accept</button>
-                                            <button href="#" type="reset" class="btn btn-danger" name="cancelUser">Cancel</button>
+                                            <button type="submit" class="btn btn-info mr-2" name="acceptUser">Accept</button>
+                                            <a href="user.php" type="reset" class="btn btn-danger" name="cancelUser">Cancel</a>
                                         </div>
                                     </div>
                                 </div>
