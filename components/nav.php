@@ -35,7 +35,7 @@ if (isset($_SESSION['name'])) {
 <nav>
     <div id="navbar">
         <div id="navbar-logo">
-            <img src="assets/images/eLife.png" width="140" height="70" alt="Logo">
+            <img src="assets/images/logo.png" width="140" height="70" alt="Logo">
         </div>
         <div id="navbar-links" class="hidden">
             <ul>

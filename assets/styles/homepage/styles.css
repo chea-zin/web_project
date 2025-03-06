@@ -629,11 +629,6 @@ button.add-to-cart {
         width: 80%; /* Adjust for mobile screen */
     }
 
-    #footer-top img {
-        width: 180px;
-        height: 90px;
-    }
-
     #footer-socials-wrapper {
         flex-direction: column;
         align-items: center; /* Center items for mobile */

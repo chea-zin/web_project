@@ -17,8 +17,8 @@
     }
 
     #footer-top img {
-        width: 180px;
-        height: 90px;
+        width: 50px;
+        height: 50px;
     }
 
     #footer-socials-wrapper {
@@ -49,12 +49,16 @@
         margin-top: 20px;
     }
 }
+#footer-top img {
+        width: 50px;
+        height: 50px;
+    }
 </style>
 <body>
 
 <footer>
     <div id="footer-top">
-        <img src="assets/images/eLife.png" alt="eLife Logo" width="220px" height="110px">
+        <img src="assets/images/logo.png" alt="Logo" width="10px" height="10px">
         <div id="footer-socials-wrapper">
             <div class="footer-social">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">

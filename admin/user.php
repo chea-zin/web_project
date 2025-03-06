@@ -1,9 +1,10 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include 'includes/connection.php';
 include 'includes/insertUser.php';
 $db = new Connection();
 $pdo = $db->getConnection();
-
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -22,9 +23,6 @@ $pdo = $db->getConnection();
     <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
         <?php include 'includes/header.php' ?>
-        <?php include 'includes/sideBar.php' ?>
-        <?php include 'includes/header.php' ?>
-
         <?php include 'includes/sideBar.php' ?>
 
         <div class="page-wrapper">
@@ -54,7 +52,9 @@ $pdo = $db->getConnection();
                                         <?php
                                         $sql = "SELECT * FROM users";
                                         $stmt = $pdo->prepare($sql);
-                                        $stmt->execute();
+                                        if (!$stmt->execute()) {
+                                            die("Query failed: " . implode(", ", $stmt->errorInfo()));
+                                        }
 
                                         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         if ($result) {
