@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include_once "includes/connection.php";
@@ -10,19 +11,13 @@ $pdo = $db->getConnection();
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["updateUser"])) {
     $id = trim($_POST["id"] ?? "");
     $name = trim($_POST["name"] ?? "");
-    $phone = trim($_POST["phone"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $password = trim($_POST["password"] ?? "");
-    $is_ban = isset($_POST["is_ban"]) ? 1 : 0;
-    $role = trim($_POST["role"] ?? "");
 
-    if (!empty($id) && !empty($name) && !empty($phone) && !empty($email) && !empty($role)) {
+    if (!empty($id) && !empty($name) && !empty($email)) {
         $data = [
             "name" => $name,
-            "phone" => $phone,
             "email" => $email,
-            "is_ban" => $is_ban,
-            "role" => $role
         ];
 
         // If password is provided, update it
@@ -72,8 +67,6 @@ if (isset($_GET['id'])) {
     <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
         <?php include 'includes/header.php' ?>
-        <?php include 'includes/sideBar.php' ?>
-        <?php include 'includes/header.php' ?>
 
         <?php include 'includes/sideBar.php' ?>
 
@@ -98,12 +91,6 @@ if (isset($_GET['id'])) {
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="phone">Phone No.</label>
-                                            <input type="text" name="phone" value="<?=$res['phone']?>" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
                                             <label for="email">Email</label>
                                             <input type="text" name="email" value="<?=$res['email']?>" class="form-control">
                                         </div>
@@ -111,31 +98,13 @@ if (isset($_GET['id'])) {
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="password">Password</label>
-                                            <input type="password" name="password" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label>Select Role</label>
-                                            <br />
-                                            <select name="role" class="form-select text-secondary">
-                                                <option value="">Select Role</option>
-                                                <option value="admin" <?= $res['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
-                                                <option value="user" <?= $res['role'] === 'user' ? 'selected' : '' ?>>User</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label for="role">Is Ban</label>
-                                            <br>
-                                            <input type="checkbox" name="is_ban" <?= $res['is_ban'] ? 'checked' : '' ?> style="width: 20px; height: 20px;">
+                                            <input type="password" value="<?=$res['password']?>" name="password" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3 text-right">
                                             <br />
-                                            <button href="#" type="submit" class="btn btn-info mr-2" name="updateUser">Accept</button>
+                                            <button type="submit" class="btn btn-info mr-2" name="updateUser">Accept</button>
                                             <a href="user.php" class="btn btn-danger" name="cancelUser">Cancel</a>
                                         </div>
                                     </div>
@@ -167,4 +136,5 @@ if (isset($_GET['id'])) {
     <script src="dist/js/pages/dashboards/dashboard1.min.js"></script>
 </body>
 
+>>>>>>> mony
 </html>

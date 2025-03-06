@@ -1,6 +1,6 @@
 <?php
 include_once "includes/connection.php";
-class Category
+class Products
 {
     private $pdo;
 
@@ -9,14 +9,17 @@ class Category
         $this->pdo = $db->getConnection();
     }
 
-    public function insert($cat_name): bool
+    public function insert($name, $description, $price, $image): bool
     {
         try {
-            $stmt = $this->pdo->prepare("INSERT INTO category (cat_name) VALUES (:cat_name)");
-            $stmt->bindParam(':cat_name', $cat_name);
+            $stmt = $this->pdo->prepare("INSERT INTO products (name, description, price, image) VALUES (:name, :description, :price, :image)");
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':price', $price);
+            $stmt->bindParam(':image', $image);
 
             if ($stmt->execute()) {
-                echo "Category Inserted Successfully!";
+                echo "Product Inserted Successfully!";
                 return true;
             } else {
                 echo "Failed to Insert!";
@@ -34,7 +37,7 @@ class Category
         try {
             // Ensure ID is provided
             if (empty($id)) {
-                throw new Exception(message: "Category ID is required for update.");
+                throw new Exception(message: "Product ID is required for update.");
             }
 
             // Construct SET part of SQL
@@ -44,7 +47,7 @@ class Category
             }
             $set = rtrim($set, ", "); // Remove last comma
 
-            $sql = "UPDATE category SET $set WHERE cat_id = :cat_id";
+            $sql = "UPDATE products SET $set WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
 
             // Bind values for SET
@@ -53,7 +56,7 @@ class Category
             }
 
             // Bind ID
-            $stmt->bindValue(":cat_id", $id, PDO::PARAM_INT);
+            $stmt->bindValue(":id", $id, PDO::PARAM_INT);
 
             return $stmt->execute();
         } catch (PDOException $e) {
@@ -63,8 +66,8 @@ class Category
 
     public function delete($id){
         try {
-            $stmt = $this->pdo->prepare("DELETE FROM category WHERE cat_id = :cat_id");
-            $stmt->bindParam(':cat_id', $id, PDO::PARAM_INT);
+            $stmt = $this->pdo->prepare("DELETE FROM products WHERE id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             return $stmt->execute();
         } catch (PDOException $e) {
             echo "Error: ". $e->getMessage();
@@ -73,4 +76,4 @@ class Category
 }
 
 $db = new Connection();
-$cat = new Category($db);
+$cat = new Products($db);

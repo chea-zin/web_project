@@ -1,3 +1,5 @@
+
+=======
 <?php
 include_once "includes/connection.php";
 class User
@@ -9,17 +11,14 @@ class User
         $this->pdo = $db->getConnection();
     }
 
-    public function insert($name, $phone, $email, $password, $is_ban, $role): bool
+    public function insert($name, $email, $password): bool
     {
         try {
             $hashedPassword = password_hash(password: $password, algo: PASSWORD_BCRYPT);
-            $stmt = $this->pdo->prepare("INSERT INTO users (name, phone, email, password, is_ban, role) VALUES (:name,:phone, :email, :password, :is_ban, :role)");
+            $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name,:email, :password)");
             $stmt->bindParam(':name', $name);
-            $stmt->bindParam(':phone', $phone);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':password', $hashedPassword);
-            $stmt->bindParam(':is_ban', $is_ban);
-            $stmt->bindParam(':role', $role);
 
             if ($stmt->execute()) {
                 echo "User Inserted Successfully!";
@@ -80,3 +79,4 @@ class User
 
 $db = new Connection();
 $user = new User($db);
+>>>>>>> mony
