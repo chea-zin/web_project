@@ -1,8 +1,6 @@
-
-=======
 <?php
 include_once "includes/connection.php";
-class User
+class Products
 {
     private $pdo;
 
@@ -11,17 +9,17 @@ class User
         $this->pdo = $db->getConnection();
     }
 
-    public function insert($name, $email, $password): bool
+    public function insert($name, $description, $price, $image): bool
     {
         try {
-            $hashedPassword = password_hash(password: $password, algo: PASSWORD_BCRYPT);
-            $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name,:email, :password)");
+            $stmt = $this->pdo->prepare("INSERT INTO products (name, description, price, image) VALUES (:name, :description, :price, :image)");
             $stmt->bindParam(':name', $name);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $hashedPassword);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':price', $price);
+            $stmt->bindParam(':image', $image);
 
             if ($stmt->execute()) {
-                echo "User Inserted Successfully!";
+                echo "Product Inserted Successfully!";
                 return true;
             } else {
                 echo "Failed to Insert!";
@@ -39,7 +37,7 @@ class User
         try {
             // Ensure ID is provided
             if (empty($id)) {
-                throw new Exception("User ID is required for update.");
+                throw new Exception(message: "Product ID is required for update.");
             }
 
             // Construct SET part of SQL
@@ -49,7 +47,7 @@ class User
             }
             $set = rtrim($set, ", "); // Remove last comma
 
-            $sql = "UPDATE users SET $set WHERE id = :id";
+            $sql = "UPDATE products SET $set WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
 
             // Bind values for SET
@@ -68,7 +66,7 @@ class User
 
     public function delete($id){
         try {
-            $stmt = $this->pdo->prepare("DELETE FROM users WHERE id = :id");
+            $stmt = $this->pdo->prepare("DELETE FROM products WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             return $stmt->execute();
         } catch (PDOException $e) {
@@ -78,5 +76,4 @@ class User
 }
 
 $db = new Connection();
-$user = new User($db);
->>>>>>> mony
+$cat = new Products($db);

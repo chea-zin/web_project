@@ -1,3 +1,5 @@
+
+=======
 <?php
 include 'includes/connection.php';
 include 'includes/insertCategory.php';
@@ -89,8 +91,6 @@ $pdo = $db->getConnection();
                     </div>
                 </div>
             </div>
-
-            <?php include 'includes/footer.php' ?>
         </div>
     </div>
     <script src="assets/libs/jquery/dist/jquery.min.js"></script>
@@ -110,4 +110,5 @@ $pdo = $db->getConnection();
     <script src="dist/js/pages/dashboards/dashboard1.min.js"></script>
 </body>
 
+>>>>>>> mony
 </html>

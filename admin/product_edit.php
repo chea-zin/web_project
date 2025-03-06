@@ -1,23 +1,38 @@
 <?php
 session_start();
 include_once "includes/connection.php";
-require_once "includes/insertCategory.php";
+require_once "includes/insertProduct.php";
 
 $db = new Connection();
-$user = new Category($db);
+$pro = new Products($db);
 $pdo = $db->getConnection();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["updateCategory"])) {
-    $id = trim($_POST["cat_id"] ?? "");
-    $name = trim($_POST["cat_name"]);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["updateProduct"])) {
+    $id = trim($_POST["id"] ?? "");
+    $name = trim($_POST["name"]);
+    $description = trim($_POST["description"]);
+    $price = trim($_POST["price"]);
+    // Handle image upload properly
+    $image = isset($_FILES["image"]["name"]) ? $_FILES["image"]["name"] : "";
 
-    if (!empty($id) && !empty($name)) {
+    // Fetch existing image if no new image is uploaded
+    if (empty($image)) {
+        $stmt = $pdo->prepare("SELECT image FROM products WHERE id = ? LIMIT 1");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $image = $row['image'] ?? "";  // Keep the existing image if no new one is uploaded
+    }
+
+
+    if (!empty($id) && !empty($name) && !empty($description) && !empty($price)) {
         $data = [
-            "cat_name" => $name,
+            "name" => $name,
+            "description" => $description,
+            "price" => $price,
+            "image" => $image,
         ];
-
-        if ($user->update($id, $data)) {
-            echo "<script>alert('Category updated Successfully!'); window.location.href='user.php';</script>";
+        if ($pro->update($id, $data)) {
+            echo "<script>alert('Product updated Successfully!'); window.location.href='products.php';</script>";
         } else {
             echo "<script>alert('Failed to update');</script>";
         }
@@ -26,14 +41,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["updateCategory"])) {
     }
 }
 
-if (isset($_GET['cat_id'])) {
-    $us_id = $_GET['cat_id'];
-    $stmt = $pdo->prepare("SELECT * FROM category WHERE cat_id = ? LIMIT 1");
-    $stmt->bindParam(1, $us_id, PDO::PARAM_INT);
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ? LIMIT 1");
+    $stmt->bindParam(1, $id, PDO::PARAM_INT);
     $stmt->execute();
     $res = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$res) {
-        echo "<h5>No Category Found!</h5>";
+        echo "<h5>No Product Found!</h5>";
         exit;
     }
 } else {
@@ -58,8 +73,6 @@ if (isset($_GET['cat_id'])) {
     <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
         <?php include 'includes/header.php' ?>
-        <?php include 'includes/sideBar.php' ?>
-        <?php include 'includes/header.php' ?>
 
         <?php include 'includes/sideBar.php' ?>
 
@@ -69,24 +82,46 @@ if (isset($_GET['cat_id'])) {
                     <div class="card">
                         <div class="card-header">
                             <h2>
-                                Update Category
+                                Update Products
                             </h2>
                         </div>
                         <div class="card-body">
-                            <form action="category_edit.php" method="POST">
-                            <input type="hidden" name="cat_id" value="<?= $res['cat_id'] ?>">
+                            <form action="product_edit.php" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="id" value="<?= $res['id'] ?>">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="name">Name</label>
-                                            <input type="text" name="cat_name" value="<?=$res['cat_name']?>" class="form-control">
+                                            <input type="text" name="name" value="<?= $res['name'] ?>" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="description">Description</label>
+                                            <input type="text" name="description" value="<?= $res['description'] ?>" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="price">Price</label>
+                                            <input type="text" name="price" value="<?= $res['price'] ?>" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="image">Image</label> <br />
+                                            <input type="file" name="image" accept="image/*">
+                                            <br />
+                                            <?php if (!empty($res['image'])): ?>
+                                                <img src="assets/image/product_page<?= htmlspecialchars($res['image']) ?>" width="100">
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <div class="mb-3 text-right">
                                             <br />
-                                            <button href="#" type="submit" class="btn btn-info mr-2" name="updateCategory">Accept</button>
-                                            <a href="categories.php" class="btn btn-danger" name="cancelUser">Cancel</a>
+                                            <button type="submit" class="btn btn-info" name="updateProduct">Accept</button>
+                                            <a href="products.php" class="btn btn-danger" name="cancelUser">Cancel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -95,8 +130,6 @@ if (isset($_GET['cat_id'])) {
                     </div>
                 </div>
             </div>
-
-            <?php include 'includes/footer.php' ?>
         </div>
     </div>
 
