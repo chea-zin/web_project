@@ -89,8 +89,6 @@ $pdo = $db->getConnection();
                     </div>
                 </div>
             </div>
-
-            <?php include 'includes/footer.php' ?>
         </div>
     </div>
     <script src="assets/libs/jquery/dist/jquery.min.js"></script>
