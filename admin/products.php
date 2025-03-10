@@ -1,4 +1,3 @@
-
 <?php
 include 'includes/connection.php';
 include 'includes/insertProduct.php';
@@ -68,7 +67,7 @@ $pdo = $db->getConnection();
                                                 <td><?php echo $product['name']; ?></td>
                                                 <td>$<?php echo number_format($product['price'], 2); ?></td>
                                                 <td>
-                                                    <img src="/www/web_project/<?php echo $product['image']; ?>" alt="Product Image"
+                                                    <img src="/www/web_project/assets/echo $product['image']; ?>" alt="Product Image"
                                                         width="50">
                                                 </td>
                                                 <td><?php echo substr($product['description'], 0, 50) . '...'; ?></td>
@@ -120,5 +119,4 @@ $pdo = $db->getConnection();
     <script src="dist/js/pages/dashboards/dashboard1.min.js"></script>
 </body>
 
->>>>>>> mony
 </html>
