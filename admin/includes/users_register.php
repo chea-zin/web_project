@@ -10,7 +10,7 @@
         public function register($name, $email, $password){
             try{
                 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                $stmt = $this->pdo->prepare("INSERT INTO users_register (name, email, password) VALUES (:name, :email, :password)");
+                $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
                 $stmt->bindParam(':name', $name);
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':password', $hashedPassword);
@@ -18,6 +18,17 @@
             }catch(PDOException $e){
                 die("Error: ". $e->getMessage());
             }
+        }
+
+        public function login($name, $password){
+            $sql = "SELECT name, password FROM users WHERE name = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(params: [$name]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($user && password_verify($password, $user['password'])){
+                return true;
+            }
+            return false;
         }
     }
 

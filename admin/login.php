@@ -1,3 +1,28 @@
+<?php 
+session_start();
+    include 'includes/connection.php';
+    include 'includes/users_register.php';
+    $db = new Connection();
+    $user = new UserRegister($db);
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $name = trim($_POST["name"]?? "");
+        $password = trim($_POST["password"]?? "");
+
+        if (!empty($name) && !empty($password)) {
+            // Authenticate user
+            if ($user->login($name, $password)) {
+                $_SESSION['user_name'] = $name; // Store name in session
+                header("Location: index.php"); // Redirect after login
+                exit();
+            } else {
+                $error_message = "Invalid username or password.";
+            }
+        } else {
+            $error_message = "Both fields are required.";
+        }
+    }
+    
+?>
 <!DOCTYPE html>
 <html dir="ltr">
 
@@ -25,20 +50,22 @@
                 <div class="col-lg-5 col-md-7 bg-white">
                     <div class="p-3">
                         <h2 class="mt-3 text-center">Sign In</h2>
-                        <p class="text-center text-danger">Username and Password incorrect.</p>
-                        <form class="mt-4">
+                        <?php if(!empty($error_message)): ?>
+                            <p class="text-center text-danger"><?php echo $error_message?></p>
+                        <?php endif?>
+                        <form class="mt-4" method="POST" action="login.php">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label class="text-dark" for="uname">Username</label>
-                                        <input class="form-control" id="uname" type="text"
-                                            placeholder="enter your username">
+                                        <label class="text-dark" for="name">Username</label>
+                                        <input class="form-control" id="name" name="name" type="text"
+                                            placeholder="enter your names">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="text-dark" for="pwd">Password</label>
-                                        <input class="form-control" id="pwd" type="password"
+                                        <input class="form-control" id="pwd" name="password" type="password"
                                             placeholder="enter your password">
                                     </div>
                                 </div>
